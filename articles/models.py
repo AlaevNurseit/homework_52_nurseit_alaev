@@ -1,17 +1,20 @@
 from django.db import models
 
-# Create your models here.
+class ToDolist(models.Model):
+    STATUS_CHOICES = [
+        ('new', 'Новая'),
+        ('in_progress', 'В процессе'),
+        ('done', 'Сделано'),
+    ]
+    description = models.TextField(null=False, blank=False, verbose_name="описание")
+    status = models.CharField(max_length=300, null=False, blank=False, verbose_name="статус")
+    execution_date = models.DateField(null=True, blank=True, verbose_name="дата выполнения")
 
-class Article(models.Model):
-    title = models.CharField(max_length=200, null=False, blank=False, verbose_name="Заголовок")
-    content = models.TextField(max_length=5000, null=True, blank=True, verbose_name="Описание")
-    author = models.CharField(max_length=100, null=False, blank=False, verbose_name="Автор")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="дата создания")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования")
 
     def __str__(self):
-        return self.title
+        return self.description[:50]
 
     class Meta:
-        db_table = "Статья"
-        verbose_name = "Статья"
+        db_table = "todolist"
+        verbose_name = "задача"
+
