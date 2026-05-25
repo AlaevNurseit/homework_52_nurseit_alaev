@@ -1,38 +1,33 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
-from articles.articles_db import ArticlesDB
-from articles.models import Article
+from articles.models import ToDolist
 
 
-# Create your views here.
-
-
-def articles(request):
-    articles = Article.objects.all()
-    context = {'articles': articles}
+def todolist_list(request):
+    todolists = ToDolist.objects.all()
+    context = {'todolists': todolists}
     return render(request, "index.html", context)
 
 
-def article(request):
+def todolist_detail(request):
     id = request.GET.get('id')
-
     if id:
         try:
-            article = Article.objects.get(id=int(id))
-            context = {'article': article}
-            return render(request, "article_view.html", context)
-        except Article.DoesNotExist:
-            return HttpResponseRedirect("/articles")
-    return HttpResponseRedirect("/articles")
+            todolist = ToDolist.objects.get(id=int(id))
+            context = {'todolist': todolist}
+            return render(request, "todolist_view.html", context)
+        except ToDolist.DoesNotExist:
+            return HttpResponseRedirect("/todolist/")
+    return HttpResponseRedirect("/todolist/")
 
-def article_create_view(request):
+def todolist_create(request):
     if request.method == 'GET':
-        return render(request, 'article_create.html')
+        status_choices = ToDolist.STATUS_CHOICES
+        return render(request, 'todolist_create.html', {'status_choices': status_choices})
     elif request.method == 'POST':
-        Article.objects.create(
-            title=request.POST.get("title"),
-            content=request.POST.get("content"),
-            author=request.POST.get("author"),
+        ToDolist.objects.create(
+            description=request.POST.get("description"),
+            status=request.POST.get("status"),
+            execution_date=request.POST.get("execution_date") or None,
         )
-        return HttpResponseRedirect("/articles")
+        return HttpResponseRedirect("/todolist/")

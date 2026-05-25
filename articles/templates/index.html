@@ -19,34 +19,32 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="/articles/">Все статьи</a>
+                <a class="nav-link active" aria-current="page" href="/todolist/">список задач</a>
             </div>
         </div>
     </div>
 </nav>
 <div class="container">
     <div class="border rounded-3 my-4 d-flex justify-content-between p-3">
-        <h1>Статьи</h1>
-        <a class="btn btn-sm btn-outline-primary fs-5 px-3 lh-lg" href="/articles/add/">Добавить статью</a>
+        <h1>задачи</h1>
+        <a class="btn btn-sm btn-outline-primary fs-5 px-3 lh-lg" href="/todolist/add/">Добавить новую задачу</a>
     </div>
     <div class="row row-cols-md-3 g-4">
-        {% for article in articles %}
+        {% for todolist in todolists %}
             <div class="col">
                 <div class="card border-secondary h-100 mb-3">
                     <div class="card-header d-flex justify-content-between">
-                        <h5 class="card-title">{{ article.title }}</h5>
-                        <span>{{ article.created_at| date:'Y-m-d' }}</span>
+                        <h5 class="card-title">{{ todolist.description }}</h5>
+                        <span>{{ todolist.execution_date }}</span>
                     </div>
                     <div class="card-body text-secondary d-flex flex-column">
-                        <p class="card-text">
-                            {% if article.content %}{{ article.content|truncatewords:5 }}{% else %}---{% endif %}</p>
-                        <span>Автор: {% if article.author %}{{ article.author }}{% else %}---{% endif %}</span>
-                        <a href="/article/?id={{ article.id }}" class="card-link mt-auto ms-auto">Подробнее</a>
+                        <p class="card-text">Статус: {{ todolist.status }}</p>
+                        <a href="/todolist/detail/?id={{ todolist.id }}" class="card-link mt-auto ms-auto">Посмотреть подробнее</a>
                     </div>
                 </div>
             </div>
         {% empty %}
-            <p>Нет данных</p>
+            <p>Нет задач</p>
         {% endfor %}
     </div>
 </div>
